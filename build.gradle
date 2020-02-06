@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+    }
+}
+
+plugins {
+    id 'java'
+    id "net.ltgt.apt-idea" version "0.18"
+    id "org.springframework.boot" version "2.0.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+group 'api-test'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    lombokVersion = "1.18.2"
+    junitVersion = "5.3.2"
+    gsonVersion = "2.8.5"
+    shazamcrestVersion = "0.11"
+}
+
+dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // Spring Boot configuration processor
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    // Spring
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    // Apache for FTP
+//    implementation "commons-net:commons-net:${commonsNetVersion}"
+
+    // Jackson
+    implementation "com.fasterxml.jackson.core:jackson-annotations"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+
+    // Gson
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+
+    // JUnit
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "junit", module: "junit"
+    }
+    implementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    implementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    implementation "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+
+    // Assertions and matchers
+    implementation "com.shazam:shazamcrest:${shazamcrestVersion}"
+    compile "xmlunit:xmlunit:1.6"
+
+    compile "com.google.guava:guava:23.5-jre"
+
+    // Work with files
+    compile "org.apache.poi:poi-ooxml:4.0.0"
+
+    // to support patch HTTP methods
+    compile "org.apache.httpcomponents:httpclient:4.5"
+}
+
+test {
+    useJUnitPlatform()
+}
