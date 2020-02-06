@@ -196,7 +196,9 @@ public class TestUser {
 
         assertNotNull(response.getBody());
 
-        if (login.getPassword() == null || login.getPassword().isEmpty()) {
+        if (login.getEmail() == null || login.getEmail().isEmpty()) {
+            assertEquals("Missing email or username", response.getBody().getError());
+        } else if (login.getPassword() == null || login.getPassword().isEmpty()) {
             assertEquals("Missing password", response.getBody().getError());
         } else assertEquals("Note: Only defined users succeed registration", response.getBody().getError());
     }
