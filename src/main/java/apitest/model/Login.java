@@ -6,22 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Users {
+public class Login {
 
-    private Integer page;
+    private String email;
 
-    private Integer per_page;
-
-    private Integer total;
-
-    private Integer total_pages;
-
-    List<UserData> data;
+    private String password;
 }

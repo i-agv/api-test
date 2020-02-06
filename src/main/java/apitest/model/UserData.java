@@ -6,20 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserPost {
-
-    private String name;
-
-    private String job;
+public class UserData {
 
     private String id;
 
-    private Instant createdAt;
+    private String email;
+
+    private String first_name;
+
+    private String last_name;
+
+    private String avatar;
 }

@@ -6,22 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.Instant;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Users {
+public class User {
 
-    private Integer page;
+    private String name;
 
-    private Integer per_page;
+    private String job;
 
-    private Integer total;
+    private String id;
 
-    private Integer total_pages;
+    private Instant createdAt;
 
-    List<UserData> data;
+    private Instant updatedAt;
 }
