@@ -4,8 +4,8 @@ import apitest.model.Error;
 import apitest.model.*;
 import apitest.rest.TestApi;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -156,7 +156,7 @@ public class TestUser {
     public void getUserNotFound() {
         ResponseEntity<Error> response = testApi.getUserError(String.valueOf(RandomUtils.nextInt(20, 50)));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "GET /users/{id} didn't return 404");
-        assertNull(response.getBody());
+        assertNull(response.getBody().getError());
     }
 
     @Test
@@ -216,13 +216,14 @@ public class TestUser {
             assertEquals("Missing email or username", response.getBody().getError());
         } else if (login.getPassword() == null || login.getPassword().isEmpty()) {
             assertEquals("Missing password", response.getBody().getError());
-        } else assertEquals("Note: Only defined users succeed registration", response.getBody().getError());
+        } else assertEquals("user not found", response.getBody().getError());
     }
 
     private static Stream<Arguments> postRegisterError() {
         List<Arguments> arguments = Arrays.asList(
                 Arguments.of(Login.builder().email("test").password("qwe").build()),
                 Arguments.of(Login.builder().email("sydney@fife").build()),
+                Arguments.of(Login.builder().email("").build()),
                 Arguments.of(Login.builder().email("test@mail.ru").password("").build())
         );
         return arguments.stream();

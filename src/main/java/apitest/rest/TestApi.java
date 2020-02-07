@@ -11,27 +11,28 @@ import java.util.HashMap;
 public class TestApi extends BaseApi {
 
     private String baseUrl = "https://reqres.in/api/";
+    private String usersUrl = baseUrl + "/users";
 
     public ResponseEntity<User> postUser(User user) {
-        return sendPostRequest(baseUrl + "users", user, User.class, new HashMap<String, String>());
+        return sendPostRequest(usersUrl, user, User.class, new HashMap<String, String>());
     }
 
     public ResponseEntity<User> putUser(String id, User user) {
-        return sendPutRequest(baseUrl + "users/{id}", user, User.class,
+        return sendPutRequest(usersUrl + "/{id}", user, User.class,
                 new HashMap<String, String>() {{
                     put("id", id);
                 }});
     }
 
     public ResponseEntity<User> patchUser(String id, User user) {
-        return sendPatchRequest(baseUrl + "users/{id}", user, User.class,
+        return sendPatchRequest(usersUrl + "/{id}", user, User.class,
                 new HashMap<String, String>() {{
                     put("id", id);
                 }});
     }
 
     public ResponseEntity<Error> deleteUser(String id) {
-        return sendDeleteRequest(baseUrl + "users/{id}", null,
+        return sendDeleteRequest(usersUrl + "/{id}", null,
                 Error.class,
                 new HashMap<String, String>() {{
                     put("id", id);
@@ -39,7 +40,7 @@ public class TestApi extends BaseApi {
     }
 
     public ResponseEntity<SingleUser> getUser(String id) {
-        return sendGetRequest(baseUrl + "users/{id}",
+        return sendGetRequest(usersUrl + "/{id}",
                 SingleUser.class,
                 new HashMap<String, String>() {{
                     put("id", id);
@@ -47,7 +48,7 @@ public class TestApi extends BaseApi {
     }
 
     public ResponseEntity<Error> getUserError(String id) {
-        return sendGetRequest(baseUrl + "users/{id}",
+        return sendGetRequest(usersUrl + "/{id}",
                 Error.class,
                 new HashMap<String, String>() {{
                     put("id", id);
@@ -55,7 +56,7 @@ public class TestApi extends BaseApi {
     }
 
     public ResponseEntity<Users> getUsers(String page) {
-        return sendGetRequest(baseUrl + "users?page={page}",
+        return sendGetRequest(usersUrl + "?page={page}",
                 Users.class,
                 new HashMap<String, String>() {{
                     put("page", page);

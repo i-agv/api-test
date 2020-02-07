@@ -7,8 +7,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
@@ -21,8 +24,7 @@ import java.util.Map;
 
 public class BaseApi {
 
-    @Autowired
-    RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate;
 
     protected <T> ResponseEntity<T> sendPostRequest(String url, Object request, Class<T> clazz, Map<String, ?> parameters) {
         return restTemplate.postForEntity(url, request, clazz, parameters);
@@ -44,7 +46,19 @@ public class BaseApi {
         return restTemplate.exchange(url, HttpMethod.PATCH, new HttpEntity<>(request), clazz, parameters);
     }
 
+    @Autowired
     public BaseApi() {
+
+        this.restTemplate = new RestTemplate();
+        // Mapping objects to JSON
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        // Custom error handling
+        restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
+            protected boolean hasError(HttpStatus statusCode) {
+                return false;
+            }
+        });
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
         SSLContext sslContext = null;
@@ -67,6 +81,8 @@ public class BaseApi {
                 new HttpComponentsClientHttpRequestFactory();
 
         requestFactory.setHttpClient(httpClient);
-        restTemplate = new RestTemplate(requestFactory);
+
+        // Mapping objects to JSON
+        restTemplate.setRequestFactory(requestFactory);
     }
 }
